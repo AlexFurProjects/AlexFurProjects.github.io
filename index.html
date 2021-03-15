@@ -50,6 +50,11 @@ var sliders =
     <button onClick=draw()>Generate Shapes</button> \
     </div>';
 
+var downloader = 
+    '<div> \
+    <button onClick=download()>Download Image</button> \
+    </div>';
+
 var canvasDom = 
         '<div> \
             <canvas id="DemoCanvas" width="500" height="600"></canvas> \
@@ -59,6 +64,7 @@ var useSliders = findGetParameter('useSliders');
 
 if (useSliders) {
     document.write(sliders);
+    document.write(downloader);
 }
 
 document.write(canvasDom);
@@ -135,6 +141,13 @@ function draw() {
         numberVertex = document.getElementById("numberOfVertex").value;
         drawShape(numberShapes, numberVertex);
     }
+}
+
+var download = function(){
+  var link = document.createElement('a');
+  link.download = 'filename.png';
+  link.href = canvas.toDataURL()
+  link.click();
 }
 
 draw();
