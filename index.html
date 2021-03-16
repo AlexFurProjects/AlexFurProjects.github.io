@@ -94,7 +94,7 @@ function newPoint(canvas) {
     return {x: x, y: y}
 }
 
-function drawRandomShape(ctx, vertCount) {
+function drawRandomShape(ctx, vertCount, color) {
     var p = newPoint(canvas);
     ctx.moveTo(p.x, p.y);
 
@@ -109,7 +109,7 @@ function drawRandomShape(ctx, vertCount) {
     }
 
     ctx.moveTo(p.x, p.y);
-    var color = 'black';
+    var color = color;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.stroke();
@@ -117,7 +117,7 @@ function drawRandomShape(ctx, vertCount) {
     ctx.closePath();
 }
 
-function drawShape(shapesNumber, vertextNumber) {
+function drawShape(shapesNumber, vertextNumber, color) {
     if (canvas.getContext == null) {
         return;
     }
@@ -125,21 +125,25 @@ function drawShape(shapesNumber, vertextNumber) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (j = 0; j < shapesNumber; j++) {
-        drawRandomShape(ctx, vertextNumber);
+        drawRandomShape(ctx, vertextNumber, color);
     }
 }
 
 function draw() {
     var numberShapes = findGetParameter("shapeNumber");
     var numberVertex = findGetParameter("vertexNumber");
+    var shapeColor = findGetParameter("shapeColor");
+    if (!shapeColor) {
+        shapeColor = 'black';
+    }
 
     if (numberShapes != null && numberVertex != null) {
-        drawShape(numberShapes, numberVertex);
+        drawShape(numberShapes, numberVertex, shapeColor);
     }
     else if (useSliders) {
         numberShapes = document.getElementById("shapeNumberSlider").value;
         numberVertex = document.getElementById("numberOfVertex").value;
-        drawShape(numberShapes, numberVertex);
+        drawShape(numberShapes, numberVertex, shapeColor);
     }
 }
 
