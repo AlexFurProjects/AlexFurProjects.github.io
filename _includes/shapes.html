@@ -8,7 +8,16 @@ var sliders =
     <input type="range" min="1" max="10" value="2" class="slider" id="shapeNumberSlider"> \
     <p>Vertex Count</p> \
     <input type="range" min="1" max="10" value="4" class="slider" id="numberOfVertex"> \
+    <input type="color" id="color_picker" value="black"/> \
     <button onClick=draw()>Generate Shapes</button> \
+    </div>';
+
+var streamLinkUI =
+    '<div> \
+        <span>Stream Link</span>\
+        <input type="text" id="streamlnk" \
+        value="https://alexfurprojects.github.io/shapestream.html?shapeNumber=4&vertexNumber=5&shapeColor=teal" \
+        style="width: 80%" readonly> \
     </div>';
 
 var downloader = 
@@ -30,11 +39,14 @@ if (useSliders) {
 
 document.write(canvasDom);
 
+if (useSliders) {
+    document.write(streamLinkUI);
+}
+
 var canvas = document.getElementById('DemoCanvas');
 
 function findGetParameter(parameterName) {
-    var result = null,
-        tmp = [];
+    var result = null, tmp = [];
     location.search
         .substr(1)
         .split("&")
@@ -94,25 +106,38 @@ function draw() {
     var numberShapes = findGetParameter("shapeNumber");
     var numberVertex = findGetParameter("vertexNumber");
     var shapeColor = findGetParameter("shapeColor");
-    if (!shapeColor) {
-        shapeColor = 'black';
+    if (shapeColor != null) {
+        shapeColor = shapeColor.replace("%23", "#");
     }
 
-    if (numberShapes != null && numberVertex != null) {
+    if (numberShapes != null && numberVertex != null && shapeColor != null) {
         drawShape(numberShapes, numberVertex, shapeColor);
     }
     else if (useSliders) {
         numberShapes = document.getElementById("shapeNumberSlider").value;
         numberVertex = document.getElementById("numberOfVertex").value;
+        shapeColor = document.getElementById("color_picker").value;
         drawShape(numberShapes, numberVertex, shapeColor);
     }
+
+    updateStreamLink(numberShapes, numberVertex, shapeColor);
+}
+
+function updateStreamLink(numberShapes, numberVertex, shapeColor) {
+    var streamLinkBase = "https://alexfurprojects.github.io/shapestream.html?shapeNumber=" 
+    + numberShapes 
+    + "&vertexNumber=" 
+    + numberVertex
+    + "&shapeColor="
+    + escape(shapeColor);
+    document.getElementById("streamlnk").value = encodeURI(streamLinkBase);
 }
 
 var download = function(){
-  var link = document.createElement('a');
-  link.download = 'filename.png';
-  link.href = canvas.toDataURL()
-  link.click();
+    var link = document.createElement('a');
+    link.download = 'filename.png';
+    link.href = canvas.toDataURL()
+    link.click();
 }
 
 draw();
