@@ -1,0 +1,56 @@
+<body>
+    <style>
+        .box {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+    <script src="/assets/scripts/color.js"></script>
+
+    <div id="box1" class="box"></div>
+    <div id="box2" class="box"></div>
+    <div id="box3" class="box"></div>
+    <div id="box4" class="box"></div>
+    <div id="box5" class="box"></div>
+
+    <button onclick="doTheThing()">Click Me</button>
+
+    <script>
+        // color in hsv
+        function shift(box, color) {
+            var rgb = convertRGBtoOBJ(box.style.backgroundColor);
+
+            var mid = midColor(rgb.r, rgb.g, rgb.b, color.r, color.g, color.b, 0.1);
+
+            var newHex = RGBToHex(mid.r, mid.g, mid.b);
+
+            box.style.backgroundColor = newHex;
+        }
+        
+        var box1 = document.getElementById("box1");
+        var box2 = document.getElementById("box2");
+        var box3 = document.getElementById("box3");
+        var box4 = document.getElementById("box4");
+        var box5 = document.getElementById("box5");
+
+        box1.style.backgroundColor = "#552266";
+        box2.style.backgroundColor = "#69ac21";
+        box3.style.backgroundColor = "#96302a";
+        box4.style.backgroundColor = "#ff0163";
+        box5.style.backgroundColor = "#328900";
+
+
+        function doTheThing() {
+            // blueish
+            var color = {r: 0, g: 0, b: 240};
+            shift(box1, color);
+            shift(box2, color);
+            shift(box3, color);
+            shift(box4, color);
+            shift(box5, color);
+        }
+
+        
+
+    </script>
+</body>
