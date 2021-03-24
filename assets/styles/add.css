@@ -12,3 +12,12 @@
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
   }
+
+  .container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+  }
+  .container img {
+    width: 150px;
+  }

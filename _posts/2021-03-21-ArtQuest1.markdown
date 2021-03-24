@@ -5,3 +5,8 @@ title:  "Art Quest 1 - Flowers"
 date:   2021-03-21 13:17:27 -0500
 ---
 
+<div class="container">
+{% for image in site.data.artquest.artquest1.images %}
+<a href="{{image}}"> <img src="{{ image }}"></a>
+{% endfor %}
+</div>
