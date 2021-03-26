@@ -149,8 +149,8 @@ function RGBtoHSV(r, g, b) {
     this.radius = 50;
   
     // State vars
-    this.color = 'white';
-    this.previewColor = 'white';
+    this.color = '#ff00ff';
+    this.previewColor = '#ff00ff';
   
     this.drawCircle = function () {
       for (var angle = 0; angle <= 360; angle += 1) {
@@ -213,6 +213,13 @@ function RGBtoHSV(r, g, b) {
   
     this.colorGradientClickEvent = function (e) {
       this.color = this.previewColor;
+      this.updateDisplay();
+      if (this.colorChange) {
+        this.colorChange(this.color);
+      }
+    };
+
+    this.updateDisplay = function() {
       var colorValues = HEXtoRGB(this.color);
       var hsvColor = RGBtoHSV(colorValues);
       this.hueSlider.value = hsvColor.h;
@@ -220,10 +227,7 @@ function RGBtoHSV(r, g, b) {
       this.valueSlider.value = hsvColor.v;
       this.selectedColorDiv.style.backgroundColor = this.color;
       this.hexDisplay.value = this.color;
-      if (this.colorChange) {
-        this.colorChange(this.color);
-      }
-    };
+    }
   
     // Event Bindings
     this.colorGradient.addEventListener(
@@ -245,6 +249,7 @@ function RGBtoHSV(r, g, b) {
   
     this.drawCircle();
     this.selectedColorDiv.style.backgroundColor = this.color;
+    this.updateDisplay();
 
     // Color Change Events
 
