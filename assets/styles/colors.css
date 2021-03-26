@@ -1,13 +1,24 @@
 .colorPickerContainer {
     display: flex;
-  }
-  
-  .colorPickerSliderBox {
+}
+
+.colorPickerSliderBox {
     display: flex;
     flex-direction: column;
-  }
-  
-  .selected_color {
+}
+
+.selected_color {
     height: 20px;
-  }
-  
+}
+
+
+.pallette_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.palletebox {
+    height: 50px;
+    width: 50px;
+    background-color: blue;
+}
