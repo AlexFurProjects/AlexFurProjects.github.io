@@ -191,6 +191,9 @@ function RGBtoHSV(r, g, b) {
       this.selectedColorDiv.style.backgroundColor = this.color;
       this.hexDisplay.value = this.color;
       this.drawCircle();
+      if (this.colorChange) {
+          this.colorChange(this.color);
+      }
     };
   
     this.colorGradientMouseMoveEventListener = function (e) {
@@ -217,6 +220,9 @@ function RGBtoHSV(r, g, b) {
       this.valueSlider.value = hsvColor.v;
       this.selectedColorDiv.style.backgroundColor = this.color;
       this.hexDisplay.value = this.color;
+      if (this.colorChange) {
+        this.colorChange(this.color);
+      }
     };
   
     // Event Bindings
@@ -239,7 +245,9 @@ function RGBtoHSV(r, g, b) {
   
     this.drawCircle();
     this.selectedColorDiv.style.backgroundColor = this.color;
+
+    // Color Change Events
+
+    this.colorChange = null;
   }
-  
-  var colorWheel = new ColorWheel("colorPicker");
   

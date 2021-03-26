@@ -26,11 +26,7 @@
     <div>
         <h2>Monochromatic</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="monochromatic"></canvas>
         </div>
         <h2>Analogous</h2>
         <div class="pallette_container">
@@ -107,4 +103,29 @@
     </div>
 
     <script src="/assets/scripts/color.js"></script>
+    <script>
+         var colorWheel = new ColorWheel("colorPicker");
+         colorWheel.colorChange = function(color) {
+            var hsvColor = RGBtoHSV(HEXtoRGB(color));
+            var monoCanvas = document.getElementById("monochromatic");
+
+            monoChromaticPalette(monoCanvas, hsvColor);
+
+         };
+
+         function monoChromaticPalette(canvas, hsvColor) {
+            var value = hsvColor.v;
+            var step = value / 6;
+            var colors = [];
+            for (i = 0; i < value; i = i + step) {
+                var color = {h: hsvColor.h, s: hsvColor.s, v: i};
+                colors.push(RGBToHex(HSVtoRGB(color)));
+            }
+            var ctx = canvas.getContext("2d");
+            for (i = 0; i < colors.length; i++) {
+                ctx.fillStyle = colors[i];
+                ctx.fillRect(i * 50, 0, 50, 50);
+            }
+         }
+    </script>
 </body>
