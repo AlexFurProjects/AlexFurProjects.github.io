@@ -26,105 +26,151 @@
     <div>
         <h2>Monochromatic</h2>
         <div class="pallette_container">
-            <canvas id="monochromatic"></canvas>
+            <canvas id="monochromatic" width="600" height="50"></canvas>
         </div>
         <h2>Analogous</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="analogous" width="600" height="50"></canvas>
         </div>
         <h2>Triadic</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="triadic" width="600" height="50"></canvas>
         </div>
         <h2>Complementary</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="complementary" width="600" height="50"></canvas>
         </div>
         <h2>Split Complementary</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="split" width="600" height="50"></canvas>
         </div>
         <h2>Analogous Complementary</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="analogous_complementary" width="600" height="50"></canvas>
         </div>
         <h2>Tetrad</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="tetrad" width="600" height="50"></canvas>
         </div>
         <h2>Saturated</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="saturated" width="600" height="50"></canvas>
         </div>
         <h2>Neutral</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+             <canvas id="neutral" width="600" height="50"></canvas>
         </div>
         <h2>Saturated and Neutral</h2>
         <div class="pallette_container">
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
-            <div class="palletebox"></div>
+            <canvas id="sat_and_nut" width="600" height="50"></canvas>
         </div>
     </div>
 
     <script src="/assets/scripts/color.js"></script>
     <script>
          var colorWheel = new ColorWheel("colorPicker");
+
+         var MAX_SV = 100;
+         var MAX_H = 360;
+         var BOX_SIZE = 50;
+         var SECTOR_ANGLE = 30;
+         var THIRD_ANGLE = 120;
+         var OPPOSITE_ANGLE = 180;
+
          colorWheel.colorChange = function(color) {
             var hsvColor = RGBtoHSV(HEXtoRGB(color));
             var monoCanvas = document.getElementById("monochromatic");
 
-            monoChromaticPalette(monoCanvas, hsvColor);
+            drawPalette(monoCanvas, monoChromaticPalette(hsvColor, 10, 10));
 
+            var analogous = document.getElementById("analogous");
+            drawPalette(analogous, analogousPalette(hsvColor));
+
+            var triadic = document.getElementById("triadic");
+            drawPalette(triadic, triadicPalette(hsvColor));
+
+            var complementary = document.getElementById("complementary");
+            drawPalette(complementary, complementaryPalette(hsvColor));
+
+            var split = document.getElementById("split");
+            drawPalette(split, splitComplementaryPalette(hsvColor));
+
+            var analCompliment = document.getElementById("analogous_complementary");
+            drawPalette(analCompliment, analogousComplementaryPalette(hsvColor));
          };
 
-         function monoChromaticPalette(canvas, hsvColor) {
-            var value = hsvColor.v;
-            var step = value / 6;
+         function monoChromaticPalette(hsvColor, count, start = 0) {
+            var step = (MAX_SV - start) / count;
             var colors = [];
-            for (i = 0; i < value; i = i + step) {
-                var color = {h: hsvColor.h, s: hsvColor.s, v: i};
+            for (var i = start; i < (start + step * count); i = i + step) {
+                var color = {h: hsvColor.h, s: hsvColor.s, v: Math.min(i, MAX_H)};
                 colors.push(RGBToHex(HSVtoRGB(color)));
             }
+            return colors;
+         }
+
+         function analogousPalette(hsvColor) {
+            var left = _normalizeAngle(hsvColor.h - SECTOR_ANGLE);
+            var right = _normalizeAngle(hsvColor.h + SECTOR_ANGLE);
+            var startColors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
+            var colors = [];
+            for (var i = 0; i < startColors.length; i++) {
+                var newColors = monoChromaticPalette(startColors[i], 3, 40);
+                colors = colors.concat(newColors);
+            }
+            return colors;
+         }
+
+         function triadicPalette(hsvColor) {
+            var left = _normalizeAngle(hsvColor.h - THIRD_ANGLE);
+            var right = _normalizeAngle(hsvColor.h + THIRD_ANGLE);
+            var startColors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
+            var colors = [];
+            for (var i = 0; i < startColors.length; i++) {
+                var newColors = monoChromaticPalette(startColors[i], 3, 40);
+                colors = colors.concat(newColors);
+            }
+            return colors;
+         }
+
+         function complementaryPalette(hsvColor) {
+            var opposite = _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE);
+            var startColors = [{h: opposite, s: hsvColor.s, v: hsvColor.v}, hsvColor];
+            var colors = [];
+            for (var i = 0; i < startColors.length; i++) {
+                var newColors = monoChromaticPalette(startColors[i], 4, 40);
+                colors = colors.concat(newColors);
+            }
+            return colors;
+         }
+
+         function splitComplementaryPalette(hsvColor) {
+            var left = _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE - SECTOR_ANGLE);
+            var right = _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE + SECTOR_ANGLE);
+            var startColors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
+            var colors = [];
+            for (var i = 0; i < startColors.length; i++) {
+                var newColors = monoChromaticPalette(startColors[i], 3, 40);
+                colors = colors.concat(newColors);
+            }
+            return colors;
+         }
+
+         function analogousComplementaryPalette(hsvColor) {
+             var colors = [];
+             colors = colors.concat(monoChromaticPalette(hsvColor, 4, 30));
+             var complementaryColor = {h: _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE), s: hsvColor.s, v: hsvColor.v};
+             colors = colors.concat(analogousPalette(complementaryColor));
+             return colors;
+         }
+
+         function drawPalette(canvas, colors) {
+            canvas.width = BOX_SIZE * colors.length;
+            canvas.height = BOX_SIZE;
             var ctx = canvas.getContext("2d");
-            for (i = 0; i < colors.length; i++) {
+            for (var i = 0; i < colors.length; i++) {
                 ctx.fillStyle = colors[i];
-                ctx.fillRect(i * 50, 0, 50, 50);
+                ctx.fillRect(i * BOX_SIZE, 0, BOX_SIZE, BOX_SIZE);
             }
          }
     </script>
