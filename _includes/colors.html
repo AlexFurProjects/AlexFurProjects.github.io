@@ -52,18 +52,6 @@
         <div class="pallette_container">
             <canvas id="tetrad" width="600" height="50"></canvas>
         </div>
-        <h2>Saturated</h2>
-        <div class="pallette_container">
-            <canvas id="saturated" width="600" height="50"></canvas>
-        </div>
-        <h2>Neutral</h2>
-        <div class="pallette_container">
-             <canvas id="neutral" width="600" height="50"></canvas>
-        </div>
-        <h2>Saturated and Neutral</h2>
-        <div class="pallette_container">
-            <canvas id="sat_and_nut" width="600" height="50"></canvas>
-        </div>
     </div>
 
     <script src="/assets/scripts/color.js"></script>
@@ -97,6 +85,9 @@
 
             var analCompliment = document.getElementById("analogous_complementary");
             drawPalette(analCompliment, analogousComplementaryPalette(hsvColor));
+
+            var tetrad = document.getElementById("tetrad");
+            drawPalette(tetrad, tetradPalette(hsvColor));
          };
 
          function monoChromaticPalette(hsvColor, count, start = 0) {
@@ -164,6 +155,22 @@
              return colors;
          }
 
+         function tetradPalette(hsvColor) {
+             var angle1 = _normalizeAngle(hsvColor.h + SECTOR_ANGLE * 2);
+             var angle2 = _normalizeAngle(hsvColor.h + SECTOR_ANGLE * 6);
+             var angle3 = _normalizeAngle(hsvColor.h + SECTOR_ANGLE * 8);
+             var color1 = { h: angle1, s: hsvColor.s, v: hsvColor.v};
+             var color2 = { h: angle2, s: hsvColor.s, v: hsvColor.v};
+             var color3 = { h: angle3, s: hsvColor.s, v: hsvColor.v};
+
+             var colors = monoChromaticPalette(hsvColor, 4, 30);
+             colors = colors.concat(monoChromaticPalette(color1, 4, 30));
+             colors = colors.concat(monoChromaticPalette(color2, 4, 30));
+             colors = colors.concat(monoChromaticPalette(color3, 4, 30));
+
+             return colors;
+         }
+
          function drawPalette(canvas, colors) {
             canvas.width = BOX_SIZE * colors.length;
             canvas.height = BOX_SIZE;
@@ -173,5 +180,6 @@
                 ctx.fillRect(i * BOX_SIZE, 0, BOX_SIZE, BOX_SIZE);
             }
          }
+
     </script>
 </body>
