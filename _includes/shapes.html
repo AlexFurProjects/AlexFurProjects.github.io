@@ -135,7 +135,7 @@ function updateStreamLink(numberShapes, numberVertex, shapeColor) {
 
 var download = function(){
     var link = document.createElement('a');
-    link.download = 'filename.png';
+    link.download = Math.random().toString(36).substring(7);
     link.href = canvas.toDataURL()
     link.click();
 }

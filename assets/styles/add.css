@@ -1,3 +1,12 @@
+.inner {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: none;
+  padding: none;
+}
+
 #home_banner {
     display: block;
     position: absolute;
@@ -27,7 +36,8 @@
   background-color: DodgerBlue; /* Blue background */
   border: none; /* Remove borders */
   color: white; /* White text */
-  padding: 12px 16px; /* Some padding */
+  padding: 10px;; /* Some padding */
+  margin: 10px;
   font-size: 16px; /* Set a font size */
   cursor: pointer; /* Mouse pointer on hover */
 }
