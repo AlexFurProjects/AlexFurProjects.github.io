@@ -3,48 +3,25 @@
     <div id="colorPicker" class="colorPickerContainer">
         <canvas class="colorWheel"></canvas>
         <div class="colorPickerSliderBox">
-          <div>
-            <input class="hue_slider" type="range" value=360 max=360 min=0>
-            <label>H</label>
-          </div>
-          <div>
-            <input class="saturation_slider" type="range" value=99 max=99 min=0>
-            <label>S</label>
-          </div>
-          <div>
-            <input class="value_slider" type="range" value=99 max=99 min=0>
-            <label>V</label>
-          </div>
-          <div class="selected_color">
-          </div>
+            <div>
+                <input class="hue_slider" type="range" value=360 max=360 min=0>
+                <label>H</label>
+            </div>
+            <div>
+                <input class="saturation_slider" type="range" value=99 max=99 min=0>
+                <label>S</label>
+            </div>
+            <div>
+                <input class="value_slider" type="range" value=99 max=99 min=0>
+                <label>V</label>
+            </div>
+                <div class="selected_color">
+            </div>
+            <div>
+                <input class="hex_display" type="text" readonly>
+            </div>
         </div>
-      </div>
+    </div>
 
-    <script>
-        // color in hsv
-        function shift(box, color) {
-            var rgb = convertRGBtoOBJ(box.style.backgroundColor);
-
-            var mid = midColor(rgb.r, rgb.g, rgb.b, color.r, color.g, color.b, 0.1);
-
-            var newHex = RGBToHex(mid.r, mid.g, mid.b);
-
-            box.style.backgroundColor = newHex;
-        }
-
-
-        function doTheThing() {
-            // blueish
-            var color = {r: 0, g: 0, b: 240};
-            shift(box1, color);
-            shift(box2, color);
-            shift(box3, color);
-            shift(box4, color);
-            shift(box5, color);
-        }
-
-        
-
-    </script>
     <script src="/assets/scripts/color.js"></script>
 </body>

@@ -140,6 +140,7 @@ function RGBtoHSV(r, g, b) {
     );
     this.valueSlider = this.parentElement.querySelector(".value_slider");
     this.selectedColorDiv = this.parentElement.querySelector(".selected_color");
+    this.hexDisplay = this.parentElement.querySelector(".hex_display");
   
     // Drawing
     this.context = this.colorGradient.getContext("2d");
@@ -188,6 +189,7 @@ function RGBtoHSV(r, g, b) {
       var newRGB = HSVtoRGB(this.hueSlider.value, this.saturationSlider.value, this.valueSlider.value);
       this.color = RGBToHex(newRGB);
       this.selectedColorDiv.style.backgroundColor = this.color;
+      this.hexDisplay.value = this.color;
       this.drawCircle();
     };
   
@@ -214,6 +216,7 @@ function RGBtoHSV(r, g, b) {
       this.saturationSlider.value = hsvColor.s;
       this.valueSlider.value = hsvColor.v;
       this.selectedColorDiv.style.backgroundColor = this.color;
+      this.hexDisplay.value = this.color;
     };
   
     // Event Bindings
