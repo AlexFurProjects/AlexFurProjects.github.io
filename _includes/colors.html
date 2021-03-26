@@ -1,19 +1,24 @@
+<link rel="stylesheet" href="/assets/styles/colors.css">
 <body>
-    <style>
-        .box {
-            width: 50px;
-            height: 50px;
-        }
-    </style>
-    <script src="/assets/scripts/color.js"></script>
-
-    <div id="box1" class="box"></div>
-    <div id="box2" class="box"></div>
-    <div id="box3" class="box"></div>
-    <div id="box4" class="box"></div>
-    <div id="box5" class="box"></div>
-
-    <button onclick="doTheThing()">Click Me</button>
+    <div id="colorPicker" class="colorPickerContainer">
+        <canvas class="colorWheel"></canvas>
+        <div class="colorPickerSliderBox">
+          <div>
+            <input class="hue_slider" type="range" value=360 max=360 min=0>
+            <label>H</label>
+          </div>
+          <div>
+            <input class="saturation_slider" type="range" value=99 max=99 min=0>
+            <label>S</label>
+          </div>
+          <div>
+            <input class="value_slider" type="range" value=99 max=99 min=0>
+            <label>V</label>
+          </div>
+          <div class="selected_color">
+          </div>
+        </div>
+      </div>
 
     <script>
         // color in hsv
@@ -26,18 +31,6 @@
 
             box.style.backgroundColor = newHex;
         }
-        
-        var box1 = document.getElementById("box1");
-        var box2 = document.getElementById("box2");
-        var box3 = document.getElementById("box3");
-        var box4 = document.getElementById("box4");
-        var box5 = document.getElementById("box5");
-
-        box1.style.backgroundColor = "#552266";
-        box2.style.backgroundColor = "#69ac21";
-        box3.style.backgroundColor = "#96302a";
-        box4.style.backgroundColor = "#ff0163";
-        box5.style.backgroundColor = "#328900";
 
 
         function doTheThing() {
@@ -53,4 +46,5 @@
         
 
     </script>
+    <script src="/assets/scripts/color.js"></script>
 </body>

@@ -1,0 +1,13 @@
+.colorPickerContainer {
+    display: flex;
+  }
+  
+  .colorPickerSliderBox {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .selected_color {
+    height: 20px;
+  }
+  
