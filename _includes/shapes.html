@@ -1,28 +1,34 @@
 <link rel="stylesheet" href="/assets/styles/shapes.css">
+<link rel="stylesheet" href="/assets/styles/colors.css">
+<script src="/assets/scripts/color.js"></script>
 <body>
 <script>
 
+var colorPicker = ' <div id="colorPicker" class="colorPickerContainer">\
+        <canvas class="colorWheel"></canvas>\
+        <div class="colorPickerSliderBox">\
+        <div><input class="hue_slider" type="range" value=360 max=360 min=0><label>H</label></div>\
+        <div><input class="saturation_slider" type="range" value=99 max=99 min=0><label>S</label></div>\
+        <div><input class="value_slider" type="range" value=99 max=99 min=0><label>V</label></div>\
+        <div class="selected_color"></div><div><input class="hex_display" type="text" readonly></div></div>\
+        <button class="btn fas fa-sync" onClick=draw()></button> \
+        <button class="btn fas fa-download" onClick=download()></button> \
+        </div>';
+
 var sliders =
     '<div class="slidecontainer"> \
-    <p>Shape Count</p> \
-    <input type="range" min="1" max="10" value="2" class="slider" id="shapeNumberSlider"> \
-    <p>Vertex Count</p> \
-    <input type="range" min="1" max="10" value="4" class="slider" id="numberOfVertex"> \
-    <input type="color" id="color_picker" value="black"/> \
-    <button class="btn fas fa-sync" onClick=draw()></button> \
+        <label for="shapeNumberSlider">Shape Count</label> \
+        <input type="range" min="1" max="10" value="2" class="slider" id="shapeNumberSlider"> \
+        <lable for="numberOfVertex">Vertex Count</p> \
+        <input type="range" min="1" max="10" value="4" class="slider" id="numberOfVertex">\
     </div>';
 
 var streamLinkUI =
-    '<div> \
+    '<div id="stream_link_container"> \
         <span>Stream Link</span>\
         <input type="text" id="streamlnk" \
         value="https://alexfurprojects.github.io/shapestream.html?shapeNumber=4&vertexNumber=5&shapeColor=teal" \
         style="width: 80%" readonly> \
-    </div>';
-
-var downloader = 
-    '<div> \
-    <button class="btn fas fa-download" onClick=download()></button> \
     </div>';
 
 var canvasDom = 
@@ -32,9 +38,13 @@ var canvasDom =
 
 var useSliders = findGetParameter('useSliders');
 
+var colorWheel = null;
+
 if (useSliders) {
     document.write(sliders);
-    document.write(downloader);
+    document.write(colorPicker);
+
+    colorWheel = new ColorWheel("colorPicker");
 }
 
 document.write(canvasDom);
@@ -116,7 +126,7 @@ function draw() {
     else if (useSliders) {
         numberShapes = document.getElementById("shapeNumberSlider").value;
         numberVertex = document.getElementById("numberOfVertex").value;
-        shapeColor = document.getElementById("color_picker").value;
+        shapeColor = colorWheel.color;
         drawShape(numberShapes, numberVertex, shapeColor);
     }
 

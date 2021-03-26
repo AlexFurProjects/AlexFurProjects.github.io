@@ -32,3 +32,11 @@
     background: #4CAF50;
     cursor: pointer;
 }
+
+.colorPickerContainer {
+    width: 100%;
+}
+
+#stream_link_container {
+    width: 100%;
+}
