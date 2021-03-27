@@ -184,6 +184,16 @@ function RGBtoHSV(r, g, b) {
     };
   
     // Events
+
+    this.hexDisplayChange = function() {
+      var hex = this.hexDisplay.value;
+      var regex = "#[0-9a-fA-F]{6}";
+      var found = hex.match(regex);
+      if (found && found.length > 0) {
+        this.color = found[0];
+        this.updateDisplay();
+      }
+    }
   
     this.hueSlidverValueChange = function () {
       var newRGB = HSVtoRGB(this.hueSlider.value, this.saturationSlider.value, this.valueSlider.value);
@@ -227,6 +237,9 @@ function RGBtoHSV(r, g, b) {
       this.valueSlider.value = hsvColor.v;
       this.selectedColorDiv.style.backgroundColor = this.color;
       this.hexDisplay.value = this.color;
+      if (this.colorChange) {
+        this.colorChange(this.color);
+      }
     }
   
     // Event Bindings
@@ -244,6 +257,7 @@ function RGBtoHSV(r, g, b) {
     );
     this.saturationSlider.addEventListener("input", this.hueSlidverValueChange.bind(this));
     this.valueSlider.addEventListener("input", this.hueSlidverValueChange.bind(this));
+    this.hexDisplay.addEventListener("input", this.hexDisplayChange.bind(this));
   
     // Setup
   
