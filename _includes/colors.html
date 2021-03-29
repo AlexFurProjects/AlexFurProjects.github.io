@@ -66,6 +66,12 @@
                 <canvas id="tetrad" width="600" height="50"></canvas>
             </div>
         </div>
+        <div>
+            <h2><button class="btn fas fa-download" onClick="download('golden', 'golden')"></button>Golden</h2>
+            <div class="pallette_container">
+                <canvas id="golden" width="600" height="50"></canvas>
+            </div>
+        </div>
     </div>
 
     <script src="/assets/scripts/color.js"></script>
@@ -78,6 +84,7 @@
          var SECTOR_ANGLE = 30;
          var THIRD_ANGLE = 120;
          var OPPOSITE_ANGLE = 180;
+         var GOLDEN_ANGLE = 137.5;
 
          function download(canvasId, type) {
             var canvas = document.getElementById(canvasId);
@@ -91,25 +98,28 @@
             var hsvColor = RGBtoHSV(HEXtoRGB(color));
             var monoCanvas = document.getElementById("monochromatic");
 
-            drawPalette(monoCanvas, monoChromaticPalette(hsvColor, 10, 10));
+            drawPalette(monoCanvas, hsvToHex(monoChromaticPalette(hsvColor, 5, 10)));
 
             var analogous = document.getElementById("analogous");
-            drawPalette(analogous, analogousPalette(hsvColor));
+            drawPalette(analogous, hsvToHex(analogousPalette(hsvColor)));
 
             var triadic = document.getElementById("triadic");
-            drawPalette(triadic, triadicPalette(hsvColor));
+            drawPalette(triadic, hsvToHex(triadicPalette(hsvColor)));
 
             var complementary = document.getElementById("complementary");
-            drawPalette(complementary, complementaryPalette(hsvColor));
+            drawPalette(complementary, hsvToHex(complementaryPalette(hsvColor)));
 
             var split = document.getElementById("split");
-            drawPalette(split, splitComplementaryPalette(hsvColor));
+            drawPalette(split, hsvToHex(splitComplementaryPalette(hsvColor)));
 
             var analCompliment = document.getElementById("analogous_complementary");
-            drawPalette(analCompliment, analogousComplementaryPalette(hsvColor));
+            drawPalette(analCompliment, hsvToHex(analogousComplementaryPalette(hsvColor)));
 
             var tetrad = document.getElementById("tetrad");
-            drawPalette(tetrad, tetradPalette(hsvColor));
+            drawPalette(tetrad, hsvToHex(tetradPalette(hsvColor)));
+
+            var golden = document.getElementById("golden");
+            drawPalette(golden, hsvToHex(goldenPalette(hsvColor)));
          };
 
          function monoChromaticPalette(hsvColor, count, start = 0) {
@@ -117,7 +127,7 @@
             var colors = [];
             for (var i = start; i < (start + step * count); i = i + step) {
                 var color = {h: hsvColor.h, s: hsvColor.s, v: Math.min(i, MAX_H)};
-                colors.push(RGBToHex(HSVtoRGB(color)));
+                colors.push(color);
             }
             return colors;
          }
@@ -125,56 +135,34 @@
          function analogousPalette(hsvColor) {
             var left = _normalizeAngle(hsvColor.h - SECTOR_ANGLE);
             var right = _normalizeAngle(hsvColor.h + SECTOR_ANGLE);
-            var startColors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
-            var colors = [];
-            for (var i = 0; i < startColors.length; i++) {
-                var newColors = monoChromaticPalette(startColors[i], 3, 40);
-                colors = colors.concat(newColors);
-            }
+            var colors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
             return colors;
          }
 
          function triadicPalette(hsvColor) {
             var left = _normalizeAngle(hsvColor.h - THIRD_ANGLE);
             var right = _normalizeAngle(hsvColor.h + THIRD_ANGLE);
-            var startColors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
-            var colors = [];
-            for (var i = 0; i < startColors.length; i++) {
-                var newColors = monoChromaticPalette(startColors[i], 3, 40);
-                colors = colors.concat(newColors);
-            }
+            var colors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
             return colors;
          }
 
          function complementaryPalette(hsvColor) {
             var opposite = _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE);
-            var startColors = [{h: opposite, s: hsvColor.s, v: hsvColor.v}, hsvColor];
-            var colors = [];
-            for (var i = 0; i < startColors.length; i++) {
-                var newColors = monoChromaticPalette(startColors[i], 4, 40);
-                colors = colors.concat(newColors);
-            }
+            var colors = [{h: opposite, s: hsvColor.s, v: hsvColor.v}, hsvColor];
             return colors;
          }
 
          function splitComplementaryPalette(hsvColor) {
             var left = _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE - SECTOR_ANGLE);
             var right = _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE + SECTOR_ANGLE);
-            var startColors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
-            var colors = [];
-            for (var i = 0; i < startColors.length; i++) {
-                var newColors = monoChromaticPalette(startColors[i], 3, 40);
-                colors = colors.concat(newColors);
-            }
+            var colors = [{h: left, s: hsvColor.s, v: hsvColor.v}, hsvColor, {h: right, s: hsvColor.s, v: hsvColor.v}];
             return colors;
          }
 
          function analogousComplementaryPalette(hsvColor) {
-             var colors = [];
-             colors = colors.concat(monoChromaticPalette(hsvColor, 4, 30));
+             var colors = [hsvColor];
              var complementaryColor = {h: _normalizeAngle(hsvColor.h + OPPOSITE_ANGLE), s: hsvColor.s, v: hsvColor.v};
-             colors = colors.concat(analogousPalette(complementaryColor));
-             return colors;
+             return colors.concat(analogousPalette(complementaryColor));
          }
 
          function tetradPalette(hsvColor) {
@@ -185,11 +173,23 @@
              var color2 = { h: angle2, s: hsvColor.s, v: hsvColor.v};
              var color3 = { h: angle3, s: hsvColor.s, v: hsvColor.v};
 
-             var colors = monoChromaticPalette(hsvColor, 4, 30);
-             colors = colors.concat(monoChromaticPalette(color1, 4, 30));
-             colors = colors.concat(monoChromaticPalette(color2, 4, 30));
-             colors = colors.concat(monoChromaticPalette(color3, 4, 30));
+             return [hsvColor, color1, color2, color3];
+         }
 
+         function goldenPalette(hsvColor) {
+            var angle1 = _normalizeAngle(hsvColor.h + GOLDEN_ANGLE);
+            var angle2 = _normalizeAngle(hsvColor.h - GOLDEN_ANGLE);
+            var color1 = { h: angle1, s: hsvColor.s, v: hsvColor.v};
+            var color2 = { h: angle2, s: hsvColor.s, v: hsvColor.v};
+
+            return [color1, hsvColor, color2];
+         }
+
+         function hsvToHex(hsvColors) {
+             colors = [];
+             for (var i = 0; i < hsvColors.length; i++) {
+                 colors.push(RGBToHex(HSVtoRGB(hsvColors[i])));
+             }
              return colors;
          }
 
