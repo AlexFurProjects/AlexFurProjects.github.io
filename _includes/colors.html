@@ -54,26 +54,15 @@
                 <canvas id="split" width="600" height="50"></canvas>
             </div>
         </div>
-        <deiv>
-            <h2><button class="btn fas fa-download" onClick="download('analogous_complementary', 'analogous_complementary')"></button>Analogous Complementary </h2>
-            <div class="pallette_container">
-                <canvas id="analogous_complementary" width="600" height="50"></canvas>
-            </div>
-        </deiv>
         <div>
             <h2><button class="btn fas fa-download" onClick="download('tetrad', 'tetrad')"></button>Tetrad</h2>
             <div class="pallette_container">
                 <canvas id="tetrad" width="600" height="50"></canvas>
             </div>
         </div>
-        <div>
-            <h2><button class="btn fas fa-download" onClick="download('golden', 'golden')"></button>Golden</h2>
-            <div class="pallette_container">
-                <canvas id="golden" width="600" height="50"></canvas>
-            </div>
-        </div>
     </div>
 
+    <script src="/lib/tinycolor-min.js"></script>
     <script src="/assets/scripts/color.js"></script>
     <script>
          var colorWheel = new ColorWheel("colorPicker");
@@ -95,31 +84,24 @@
          }
 
          colorWheel.colorChange = function(color) {
-            var hsvColor = RGBtoHSV(HEXtoRGB(color));
             var monoCanvas = document.getElementById("monochromatic");
 
-            drawPalette(monoCanvas, hsvToHex(monoChromaticPalette(hsvColor, 5, 10)));
+            drawPalette(monoCanvas, color.monochromatic());
 
             var analogous = document.getElementById("analogous");
-            drawPalette(analogous, hsvToHex(analogousPalette(hsvColor)));
+            drawPalette(analogous, color.analogous());
 
             var triadic = document.getElementById("triadic");
-            drawPalette(triadic, hsvToHex(triadicPalette(hsvColor)));
+            drawPalette(triadic, color.triad());
 
             var complementary = document.getElementById("complementary");
-            drawPalette(complementary, hsvToHex(complementaryPalette(hsvColor)));
+            drawPalette(complementary, [color, color.complement()]);
 
             var split = document.getElementById("split");
-            drawPalette(split, hsvToHex(splitComplementaryPalette(hsvColor)));
-
-            var analCompliment = document.getElementById("analogous_complementary");
-            drawPalette(analCompliment, hsvToHex(analogousComplementaryPalette(hsvColor)));
+            drawPalette(split, color.splitcomplement());
 
             var tetrad = document.getElementById("tetrad");
-            drawPalette(tetrad, hsvToHex(tetradPalette(hsvColor)));
-
-            var golden = document.getElementById("golden");
-            drawPalette(golden, hsvToHex(goldenPalette(hsvColor)));
+            drawPalette(tetrad, color.tetrad());
          };
 
          function monoChromaticPalette(hsvColor, count, start = 0) {
@@ -198,7 +180,7 @@
             canvas.height = BOX_SIZE;
             var ctx = canvas.getContext("2d");
             for (var i = 0; i < colors.length; i++) {
-                ctx.fillStyle = colors[i];
+                ctx.fillStyle = colors[i].toHexString();
                 ctx.fillRect(i * BOX_SIZE, 0, BOX_SIZE, BOX_SIZE);
             }
          }

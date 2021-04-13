@@ -1,0 +1,27 @@
+{
+  "name": "alexfurprojects.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "colors.js": "^1.2.4",
+    "rgbquant": "^1.1.2",
+    "tinycolor2": "^1.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "bundle exec jekyll build",
+    "serve": "bundle exec jekyll serve",
+    "copy_npm": "./sources.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexFurProjects/AlexFurProjects.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexFurProjects/AlexFurProjects.github.io/issues"
+  },
+  "homepage": "https://github.com/AlexFurProjects/AlexFurProjects.github.io#readme"
+}
