@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/assets/styles/shapes.css">
 <link rel="stylesheet" href="/assets/styles/colors.css">
+<script src="/lib/tinycolor-min.js"></script>
 <script src="/assets/scripts/color.js"></script>
 <body>
 <script>
@@ -130,7 +131,7 @@ function draw() {
         drawShape(numberShapes, numberVertex, shapeColor);
     }
 
-    updateStreamLink(numberShapes, numberVertex, shapeColor);
+    updateStreamLink(numberShapes, numberVertex, shapeColor.toHexString());
 }
 
 function updateStreamLink(numberShapes, numberVertex, shapeColor) {
