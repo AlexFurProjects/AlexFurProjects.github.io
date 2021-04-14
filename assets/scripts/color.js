@@ -106,7 +106,7 @@ function ColorWheel(containerElement) {
     this.hueSlider.value = hsvColor.h;
     this.saturationSlider.value = hsvColor.s * 100;
     this.valueSlider.value = hsvColor.v * 100;
-    this.selectedColorDiv.style.backgroundColor = this.color;
+    this.selectedColorDiv.style.backgroundColor = this.color.toHexString();
     this.hexDisplay.value = this.color.toHexString();
     if (this.colorChange) {
       this.colorChange(this.color);

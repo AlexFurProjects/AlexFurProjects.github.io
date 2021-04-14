@@ -1,0 +1,82 @@
+<link rel="stylesheet" href="/assets/styles/colors.css">
+<body>
+    <div id="palettes">
+            <input type='file' name='img' size='65' id='uploadimage'>
+            <div class="pallete">
+                <h2><button class="btn fas fa-download" onClick="download('canvas')"></button>Palette</h2> 
+                <div class="pallette_container">
+                    <canvas id="canvas" width="600" height="50"></canvas>
+                </div>
+            </div>
+    </div>
+    <script src="/lib/tinycolor-min.js"></script>
+    <script src="/lib/rgbquant.js"></script>
+
+    <script>
+        function draw(ev) {
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            var f = document.getElementById("uploadimage").files[0];
+            var url = window.URL || window.webkitURL;
+            var src = url.createObjectURL(f);
+            img.src = src;
+            img.onload = function(){
+                context.scale(65, 65);
+                var palette = getPalette(img);
+                drawPalette(canvas, img, palette);
+                url.revokeObjectURL(img);
+            }
+        }
+
+        function getPalette(img) {
+            var opts = {
+            colors: 8,             // desired palette size
+            dithKern: "",
+            dithSerp: false,
+            initColors: 4096,
+            method: 2,
+            minHueColors: 0
+        };
+
+            var q = new RgbQuant(opts);
+            q.sample(img);
+            var pal = q.palette(true, false);
+            var colors = [];
+            for (var i = 0; i < pal.length; i++) {
+                var color = tinycolor({r : pal[i][0], g : pal[i][1], b : pal[i][2]});
+                if (color.toHsv().v < 0.1) { color.brighten(amount = 50); }
+                if (color.toHsv().v > 0.99) { color.darken(amount = 20); }
+                colors.push(color);
+            }
+            return colors;
+        }
+
+        function drawPalette(canvas, img, colors) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var boxHeight = img.height / colors.length;
+            var boxWidth = img.width * 0.1;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            for (var i = 0; i < colors.length; i++) {
+                var color = colors[i];
+                ctx.fillStyle = color.toHexString();
+                ctx.fillRect(0, i * boxHeight, boxWidth, boxHeight);
+            }
+         }
+
+         function download(canvasId) {
+            var canvas = document.getElementById(canvasId);
+            var link = document.createElement('a');
+            var f = document.getElementById("uploadimage").files[0];
+            var fileName = f.name.replace(/\.[^/.]+$/, "")
+            link.download = fileName + "-palette.png";
+            link.href = canvas.toDataURL()
+            link.click();
+         }
+
+        document.getElementById("uploadimage").addEventListener("change", draw, false);
+    </script>
+</body>
