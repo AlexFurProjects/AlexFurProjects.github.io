@@ -7,6 +7,7 @@
     "node": ">=12"
   },
   "dependencies": {
+    "@jaames/iro": "^5.5.1",
     "colors.js": "^1.2.4",
     "rgbquant": "^1.1.2",
     "tinycolor2": "^1.4.2"

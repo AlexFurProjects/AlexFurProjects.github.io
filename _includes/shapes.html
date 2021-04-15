@@ -2,16 +2,12 @@
 <link rel="stylesheet" href="/assets/styles/colors.css">
 <script src="/lib/tinycolor-min.js"></script>
 <script src="/assets/scripts/color.js"></script>
+<script src="/lib/iro.min.js"></script>
 <body>
 <script>
 
 var colorPicker = ' <div id="colorPicker" class="colorPickerContainer">\
-        <canvas class="colorWheel"></canvas>\
-        <div class="colorPickerSliderBox">\
-        <div><input class="hue_slider" type="range" value=360 max=360 min=0><label>H</label></div>\
-        <div><input class="saturation_slider" type="range" value=99 max=99 min=0><label>S</label></div>\
-        <div><input class="value_slider" type="range" value=99 max=99 min=0><label>V</label></div>\
-        <div class="selected_color"></div><div><input class="hex_display" type="text"></div></div>\
+        <div id="colorWheel"></div>\
         <button class="btn fas fa-sync" onClick=draw()></button> \
         <button class="btn fas fa-download" onClick=download()></button> \
         </div>';
@@ -45,7 +41,24 @@ if (useSliders) {
     document.write(sliders);
     document.write(colorPicker);
 
-    colorWheel = new ColorWheel("colorPicker");
+    var colorWheel = new iro.ColorPicker('#colorWheel', {
+            width: 250,
+            height: 150,
+            color: "#ff00ff",
+            layoutDirection: 'horizontal',
+            layout: [
+                { component: iro.ui.Wheel },
+                { component: iro.ui.Slider,
+                    options: { sliderType: 'hue' }
+                },
+                { component: iro.ui.Slider,
+                    options: { sliderType: 'value' }
+                },
+                { component: iro.ui.Slider,
+                    options: { sliderType: 'saturation' }
+                }
+            ]
+        });
 }
 
 document.write(canvasDom);
@@ -127,11 +140,11 @@ function draw() {
     else if (useSliders) {
         numberShapes = document.getElementById("shapeNumberSlider").value;
         numberVertex = document.getElementById("numberOfVertex").value;
-        shapeColor = colorWheel.color;
+        shapeColor = colorWheel.color.hexString;
         drawShape(numberShapes, numberVertex, shapeColor);
     }
 
-    updateStreamLink(numberShapes, numberVertex, shapeColor.toHexString());
+    updateStreamLink(numberShapes, numberVertex, shapeColor);
 }
 
 function updateStreamLink(numberShapes, numberVertex, shapeColor) {

@@ -1,26 +1,6 @@
 <link rel="stylesheet" href="/assets/styles/colors.css">
 <body>
     <div id="colorPicker" class="colorPickerContainer">
-        <canvas class="colorWheel"></canvas>
-        <div class="colorPickerSliderBox">
-            <div>
-                <input class="hue_slider" type="range" value=360 max=360 min=0>
-                <label>H</label>
-            </div>
-            <div>
-                <input class="saturation_slider" type="range" value=99 max=99 min=0>
-                <label>S</label>
-            </div>
-            <div>
-                <input class="value_slider" type="range" value=99 max=99 min=0>
-                <label>V</label>
-            </div>
-                <div class="selected_color">
-            </div>
-            <div>
-                <input class="hex_display" type="text">
-            </div>
-        </div>
     </div>
 
     <div id="palettes">
@@ -63,27 +43,47 @@
     </div>
 
     <script src="/lib/tinycolor-min.js"></script>
+    <script src="/lib/iro.min.js"></script>
     <script src="/assets/scripts/color.js"></script>
     <script>
-         var colorWheel = new ColorWheel("colorPicker");
+         var colorWheel = new iro.ColorPicker('#colorPicker', {
+            width: 250,
+            height: 150,
+            color: "#ff00ff",
+            layoutDirection: 'horizontal',
+            layout: [
+                { component: iro.ui.Wheel },
+                { component: iro.ui.Slider,
+                    options: { sliderType: 'hue' }
+                },
+                { component: iro.ui.Slider,
+                    options: { sliderType: 'value' }
+                },
+                { component: iro.ui.Slider,
+                    options: { sliderType: 'saturation' }
+                }
+            ]
+        });
 
-         var MAX_SV = 100;
-         var MAX_H = 360;
-         var BOX_SIZE = 50;
-         var SECTOR_ANGLE = 30;
-         var THIRD_ANGLE = 120;
-         var OPPOSITE_ANGLE = 180;
-         var GOLDEN_ANGLE = 137.5;
+        var MAX_SV = 100;
+        var MAX_H = 360;
+        var BOX_SIZE = 50;
+        var SECTOR_ANGLE = 30;
+        var THIRD_ANGLE = 120;
+        var OPPOSITE_ANGLE = 180;
+        var GOLDEN_ANGLE = 137.5;
 
-         function download(canvasId, type) {
-            var canvas = document.getElementById(canvasId);
-            var link = document.createElement('a');
-            link.download = "" + type + "" + colorWheel.color + ".png";
-            link.href = canvas.toDataURL()
-            link.click();
-         }
+        function download(canvasId, type) {
+        var canvas = document.getElementById(canvasId);
+        var link = document.createElement('a');
+        link.download = "" + type + "" + colorWheel.color + ".png";
+        link.href = canvas.toDataURL()
+        link.click();
+        }
 
-         colorWheel.colorChange = function(color) {
+        function colorUpdate(colorWheelColor) {
+            var color = tinycolor(colorWheelColor.hexString);
+
             var monoCanvas = document.getElementById("monochromatic");
 
             drawPalette(monoCanvas, color.monochromatic());
@@ -102,18 +102,20 @@
 
             var tetrad = document.getElementById("tetrad");
             drawPalette(tetrad, color.tetrad());
-         };
-
-         function drawPalette(canvas, colors) {
-            canvas.width = BOX_SIZE * colors.length;
-            canvas.height = BOX_SIZE;
-            var ctx = canvas.getContext("2d");
+        }
+        
+        function drawPalette(canvas, colors) {
+        canvas.width = BOX_SIZE * colors.length;
+        canvas.height = BOX_SIZE;
+        var ctx = canvas.getContext("2d");
             for (var i = 0; i < colors.length; i++) {
                 ctx.fillStyle = colors[i].toHexString();
                 ctx.fillRect(i * BOX_SIZE, 0, BOX_SIZE, BOX_SIZE);
             }
-         }
+        }
 
-        colorWheel.colorChange(colorWheel.color);
+        colorWheel.on('color:change', colorUpdate);
+
+        colorUpdate(colorWheel.color);
     </script>
 </body>
