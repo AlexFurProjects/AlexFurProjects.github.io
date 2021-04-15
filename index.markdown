@@ -1,12 +1,10 @@
 ---
 theme: jekyll-theme-slate
 ---
-# [Art Resources](/#)
+# Tools
+* [Abstract Shapes](/shapes.html?useSliders=true)
+* [Color Theory](/colors.html)
+* [Palette Generator](/palette.html)
 
-# [Abstract Shapes](/shapes.html?useSliders=true)
-
-# [Colors Theory](/colors.html)
-
-# [Palette Generator](/palette.html)
-
-# [Art Quests](/artquest.html)
+# Ideas
+* [Art Quests](/artquest.html)

@@ -1,8 +1,6 @@
 .inner {
   display: flex;
   flex-flow: column wrap;
-  justify-content: center;
-  align-items: center;
   max-width: none;
   padding: none;
 }
