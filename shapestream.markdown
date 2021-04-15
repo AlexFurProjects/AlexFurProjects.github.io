@@ -1,4 +1,4 @@
 ---
 layout: empty
 ---
-{% include shapes.html %}
+{% include shapestream.html %}

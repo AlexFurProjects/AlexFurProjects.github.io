@@ -2,44 +2,33 @@
 <link rel="stylesheet" href="/assets/styles/colors.css">
 <script src="/lib/tinycolor-min.js"></script>
 <script src="/lib/iro.min.js"></script>
-<script>
+<script src="/assets/scripts/shape.js"></script>
 
-var colorPicker = ' <div id="colorPicker" class="colorPickerContainer">\
-        <div id="colorWheel"></div>\
-        <button class="btn fas fa-sync" onClick=draw()></button> \
-        <button class="btn fas fa-download" onClick=download()></button> \
-        </div>';
-
-var sliders =
-    '<div class="slidecontainer"> \
-        <label for="shapeNumberSlider">Shape Count</label> \
-        <input type="range" min="1" max="10" value="2" class="slider" id="shapeNumberSlider"> \
-        <lable for="numberOfVertex">Vertex Count</p> \
-        <input type="range" min="1" max="10" value="4" class="slider" id="numberOfVertex">\
-    </div>';
-
-var streamLinkUI =
-    '<div id="stream_link_container"> \
-        <span>Stream Link</span>\
-        <input type="text" id="streamlnk" \
-        value="https://alexfurprojects.github.io/shapestream.html?shapeNumber=4&vertexNumber=5&shapeColor=teal" \
-        style="width: 80%" readonly> \
-    </div>';
-
-var canvasDom = 
-        '<div> \
-            <canvas id="DemoCanvas" width="500" height="600"></canvas> \
-        </div>';
-
-var useSliders = findGetParameter('useSliders');
-
-var colorWheel = null;
-
-if (useSliders) {
-    document.write(sliders);
-    document.write(colorPicker);
-
-    var colorWheel = new iro.ColorPicker('#colorWheel', {
+<section id="page">
+    <div id="layout" class="colorPickerContainer">
+        <div id="slidecontainer">
+            <label for="shapeNumberSlider">Shape Count</label>
+            <input type="range" min="1" max="10" value="2" class="slider" id="shapeNumberSlider">
+            <label for="numberOfVertex">Vertex Count</label>
+            <input type="range" min="1" max="10" value="4" class="slider" id="numberOfVertex">
+        </div>
+        <div id="shape_settings">
+            <div id="colorWheel"></div>
+            <div id="buttons">
+                <button class="btn fas fa-sync" onClick="draw()"></button>
+                <button class="btn fas fa-download" onclick="download()"></button>
+            </div>
+            <canvas id="DemoCanvas" width="500" height="500"></canvas>
+        </div>
+        <div id="stream_link_container">
+            <span>Stream Link</span>
+            <input type="text" id="streamlnk"
+            value="https://alexfurprojects.github.io/shapestream.html?shapeNumber=4&vertexNumber=5&shapeColor=teal"
+            style="width: 80%" readonly>
+        </div>
+    </div>
+    <script>
+        var colorWheel = new iro.ColorPicker('#colorWheel', {
             width: 250,
             height: 150,
             color: "#ff00ff",
@@ -57,111 +46,35 @@ if (useSliders) {
                 }
             ]
         });
-}
-
-document.write(canvasDom);
-
-if (useSliders) {
-    document.write(streamLinkUI);
-}
-
-var canvas = document.getElementById('DemoCanvas');
-
-function findGetParameter(parameterName) {
-    var result = null, tmp = [];
-    location.search
-        .substr(1)
-        .split("&")
-        .forEach(function (item) {
-          tmp = item.split("=");
-          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-        });
-    return result;
-}
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function newPoint(canvas) {
-    var x = getRandomInt(canvas.width);
-    var y = getRandomInt(canvas.height);
-    return {x: x, y: y}
-}
-
-function drawRandomShape(ctx, vertCount, color) {
-    var p = newPoint(canvas);
-    ctx.moveTo(p.x, p.y);
-
-    ctx.lineWidth = 5;  
-    ctx.beginPath();
-    for (i = 0; i < vertCount; i++) {
-        var p1 = newPoint(canvas);
-        var p2 = newPoint(canvas);
-        var p3 = newPoint(canvas);
-
-        ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
-    }
-
-    ctx.moveTo(p.x, p.y);
-    var color = color;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.stroke();
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawShape(shapesNumber, vertextNumber, color) {
-    if (canvas.getContext == null) {
-        return;
-    }
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (j = 0; j < shapesNumber; j++) {
-        drawRandomShape(ctx, vertextNumber, color);
-    }
-}
-
-function draw() {
-    var numberShapes = findGetParameter("shapeNumber");
-    var numberVertex = findGetParameter("vertexNumber");
-    var shapeColor = findGetParameter("shapeColor");
-    if (shapeColor != null) {
-        shapeColor = shapeColor.replace("%23", "#");
-    }
-
-    if (numberShapes != null && numberVertex != null && shapeColor != null) {
-        drawShape(numberShapes, numberVertex, shapeColor);
-    }
-    else if (useSliders) {
-        numberShapes = document.getElementById("shapeNumberSlider").value;
-        numberVertex = document.getElementById("numberOfVertex").value;
-        shapeColor = colorWheel.color.hexString;
-        drawShape(numberShapes, numberVertex, shapeColor);
-    }
-
-    updateStreamLink(numberShapes, numberVertex, shapeColor);
-}
-
-function updateStreamLink(numberShapes, numberVertex, shapeColor) {
-    var streamLinkBase = "https://alexfurprojects.github.io/shapestream.html?shapeNumber=" 
-    + numberShapes 
-    + "&vertexNumber=" 
-    + numberVertex
-    + "&shapeColor="
-    + escape(shapeColor);
-    document.getElementById("streamlnk").value = encodeURI(streamLinkBase);
-}
-
-var download = function(){
-    var link = document.createElement('a');
-    link.download = Math.random().toString(36).substring(7);
-    link.href = canvas.toDataURL()
-    link.click();
-}
-
-draw();
-
-</script>
+        
+        var canvas = document.getElementById('DemoCanvas');
+        
+        function draw() {
+            numberShapes = document.getElementById("shapeNumberSlider").value;
+            numberVertex = document.getElementById("numberOfVertex").value;
+            shapeColor = colorWheel.color.hexString;
+            drawShape(canvas, numberShapes, numberVertex, shapeColor);
+            updateStreamLink(numberShapes, numberVertex, shapeColor);
+        }
+        
+        function updateStreamLink(numberShapes, numberVertex, shapeColor) {
+            var streamLinkBase = "https://alexfurprojects.github.io/shapestream.html?shapeNumber=" 
+            + numberShapes 
+            + "&vertexNumber=" 
+            + numberVertex
+            + "&shapeColor="
+            + escape(shapeColor);
+            document.getElementById("streamlnk").value = encodeURI(streamLinkBase);
+        }
+        
+        var download = function(){
+            var link = document.createElement('a');
+            link.download = Math.random().toString(36).substring(7);
+            link.href = canvas.toDataURL()
+            link.click();
+        }
+        
+        draw();
+        
+    </script>                
+</section>
