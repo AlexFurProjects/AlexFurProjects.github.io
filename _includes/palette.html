@@ -45,11 +45,21 @@
             var colors = [];
             for (var i = 0; i < pal.length; i++) {
                 var color = tinycolor({r : pal[i][0], g : pal[i][1], b : pal[i][2]});
-                if (color.toHsv().v < 0.1) { color = color.brighten(amount = 50); }
+                if (color.toHsv().v < 0.1) { color = color.brighten(amount = 20); }
                 if (color.toHsv().v > 0.99) { color = color.darken(amount = 20); }
                 if (color.toHsv().s < 0.1) { color = color.saturate(amount = 20); }
                 colors.push(color);
             }
+            colors.sort(function(a, b) {
+                var valueA = a.toHsv().h;
+                var valueB = b.toHsv().h;
+                return valueA - valueB;
+            });
+            colors.sort(function(a, b) {
+                var valueA = a.toHsv().v;
+                var valueB = b.toHsv().v;
+                return valueA - valueB;
+            });
             return colors;
         }
 
