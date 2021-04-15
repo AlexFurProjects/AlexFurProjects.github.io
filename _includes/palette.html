@@ -71,7 +71,7 @@
             var width = canvas.width;
             var height = canvas.height;
 
-            var boxWidth = width * 0.1;
+            var boxWidth = Math.max(width * 0.1, 60);
             var boxHeight = height / colors.length;
             var ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
