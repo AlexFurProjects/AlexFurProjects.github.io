@@ -2,7 +2,7 @@
 layout: post
 theme:  jekyll-theme-slate
 title:  "Art Quest 2 - Perspective"
-date:   2021-03-21 13:17:27 -0500
+date:   2021-05-21 16:42:00 -0500
 ---
 <h2>Perspective</h2>
 Most pictures can be broken down into one, two, or three point perspective. The "points" refer to the vanishing point of a line segment. 
