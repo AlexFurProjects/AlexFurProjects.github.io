@@ -1,0 +1,12 @@
+colWidth: 2
+images:
+  - "/assets/images/artquest2/simple.png"
+  - "/assets/images/artquest2/complex.png"
+  - "/assets/images/artquest2/2point.png"
+  - "/assets/images/artquest2/3point.png"
+  - "/assets/images/artquest2/color_distance.png"
+  - "/assets/images/artquest2/one.jpg"
+  - "/assets/images/artquest2/two.jpeg"
+  - "/assets/images/artquest2/three.jpg"
+  - "/assets/images/artquest2/practice1.jpg"
+  - "/assets/images/artquest2/practice2.jpg"
