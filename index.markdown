@@ -5,6 +5,7 @@ theme: jekyll-theme-slate
 * [Abstract Shapes](/shapes.html?useSliders=true)
 * [Color Theory](/colors.html)
 * [Palette Generator](/palette.html)
+* [Mother Color](/mothercolor.html)
 
 # Ideas
 * [Art Quests](/artquest.html)

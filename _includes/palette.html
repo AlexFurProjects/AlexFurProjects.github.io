@@ -7,12 +7,24 @@
                 <div class="pallette_container">
                     <canvas id="canvas" width="600" height="50"></canvas>
                 </div>
+                <div id="colorWheel"></div>
             </div>
     </div>
     <script src="/lib/tinycolor-min.js"></script>
     <script src="/lib/rgbquant.js"></script>
+    <script src="/lib/iro.min.js"></script>
 
     <script>
+        var colorWheel = new iro.ColorPicker('#colorWheel', {
+            width: 250,
+            height: 150,
+            color: "#ff00ff",
+            layoutDirection: 'horizontal',
+            layout: [
+                { component: iro.ui.Wheel }
+            ]
+        });
+
         function draw(ev) {
             var canvas = document.getElementById('canvas');
             var context = canvas.getContext('2d');
@@ -80,6 +92,7 @@
                 var color = colors[i];
                 ctx.fillStyle = color.toHexString();
                 ctx.fillRect(0, i * boxHeight, boxWidth, boxHeight);
+                colorWheel.addColor(color.toHexString());
             }
          }
 

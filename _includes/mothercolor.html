@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="/assets/styles/colors.css">
+<section>
+    <div id="container">
+        <div id="colorWheel"></div>
+        <input type="text" id="colorEntry">
+        <button id="addColorBtn" onclick="addColor()">Add Color</button>
+    </div>
+
+    <script src="/lib/tinycolor-min.js"></script>
+    <script src="/lib/iro.min.js"></script>
+
+    <script>
+        var colorInput = document.getElementById('colorEntry');
+        var colorWheel = new iro.ColorPicker('#colorWheel', {
+            width: 250,
+            height: 150,
+            color: "#ff00ff",
+            layoutDirection: 'horizontal',
+            layout: [
+                { component: iro.ui.Wheel }
+            ]
+        });
+        function addColor() {
+            colorWheel.addColor(colorInput.value);
+        }
+    </script>
+</section>
