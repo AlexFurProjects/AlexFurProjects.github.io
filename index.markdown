@@ -8,7 +8,7 @@ theme: jekyll-theme-slate
 * [Mother Color](/mothercolor.html)
 
 # Ideas
-* [Art Quests](/artquest.html)
+* ToDo
 
 # Outside Resources
 * [Animal Head References](https://x6ud.github.io/#/)
