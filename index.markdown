@@ -7,9 +7,6 @@ theme: jekyll-theme-slate
 * [Palette Generator](/palette.html)
 * [Mother Color](/mothercolor.html)
 
-# Ideas
-* ToDo
-
 # Outside Resources
 * [Animal Head References](https://x6ud.github.io/#/)
 * [Palettes](https://colorpalettes.net/)
