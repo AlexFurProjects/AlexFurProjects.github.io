@@ -16,3 +16,7 @@ theme: jekyll-theme-slate
 * [Color and Light a Guide for the Realist Painter by James Gurney](https://archive.org/details/Color_and_Light_James_Gurney_English/page/35/mode/2up)
 * [Drawing in Perspective](https://www.artistsnetwork.com/art-mediums/learn-to-draw-perspective/)
 
+# Alex's Links
+* [AlexFurArt Twitter](https://twitter.com/AFurbottomArt)
+* [AlexFur FA](https://www.furaffinity.net/user/alexfurbottom/)
+
