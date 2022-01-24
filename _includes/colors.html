@@ -8,37 +8,37 @@
         <div class="pallete">
             <h2><button class="btn fas fa-download" onClick="download('monochromatic', 'monochromatic')"></button>Monochromatic</h2> 
             <div class="pallette_container">
-                <canvas id="monochromatic" width="600" height="50"></canvas>
+                <canvas id="monochromatic" width="500" height="500"></canvas>
             </div>
         </div>
         <div>
             <h2><button class="btn fas fa-download" onClick="download('analogous', 'analogous')"></button>Analogous</h2>
             <div class="pallette_container">
-                <canvas id="analogous" width="600" height="50"></canvas>
+                <canvas id="analogous" width="500" height="500"></canvas>
             </div>
         </div>
         <div>
             <h2><button class="btn fas fa-download" onClick="download('triadic', 'triadic')"></button>Triadic</h2>
             <div class="pallette_container">
-                <canvas id="triadic" width="600" height="50"></canvas>
+                <canvas id="triadic" width="500" height="500"></canvas>
             </div>
         </div>
         <div>
             <h2><button class="btn fas fa-download" onClick="download('complementary', 'complementary')"></button>Complementary</h2>
             <div class="pallette_container">
-                <canvas id="complementary" width="600" height="50"></canvas>
+                <canvas id="complementary" width="500" height="500"></canvas>
             </div>
         </div>
         <div>
             <h2><button class="btn fas fa-download" onClick="download('split', 'split_complementary')"></button>Split Complementary </h2>
             <div class="pallette_container">
-                <canvas id="split" width="600" height="50"></canvas>
+                <canvas id="split" width="500" height="500"></canvas>
             </div>
         </div>
         <div>
             <h2><button class="btn fas fa-download" onClick="download('tetrad', 'tetrad')"></button>Tetrad</h2>
             <div class="pallette_container">
-                <canvas id="tetrad" width="600" height="50"></canvas>
+                <canvas id="tetrad" width="500" height="500"></canvas>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
          var colorWheel = new iro.ColorPicker('#colorPicker', {
             width: 250,
             height: 150,
-            color: "#ff00ff",
+            color: "#ff0000",
             layoutDirection: 'horizontal',
             layout: [
                 { component: iro.ui.Wheel },
@@ -70,13 +70,10 @@
             ]
         });
 
-        var MAX_SV = 100;
-        var MAX_H = 360;
-        var BOX_SIZE = 50;
         var SECTOR_ANGLE = 30;
-        var THIRD_ANGLE = 120;
-        var OPPOSITE_ANGLE = 180;
-        var GOLDEN_ANGLE = 137.5;
+        var DARKEN = 10;
+        //var DESAT = 80;
+        var DESAT = 50;
 
         function download(canvasId, type) {
         var canvas = document.getElementById(canvasId);
@@ -93,33 +90,157 @@
 
             var monoCanvas = document.getElementById("monochromatic");
 
-            drawPalette(monoCanvas, color.monochromatic());
+            drawPalette(monoCanvas, color.monochromatic(results = 12));
 
             var analogous = document.getElementById("analogous");
-            drawPalette(analogous, color.analogous());
+            drawPalette(analogous, color.analogous(results = 12));
 
             var triadic = document.getElementById("triadic");
-            drawPalette(triadic, color.triad());
+            drawPalette(triadic, triad(color));
 
             var complementary = document.getElementById("complementary");
-            drawPalette(complementary, [color, color.complement()]);
+            drawPalette(complementary, complementaryPallete(color));
 
             var split = document.getElementById("split");
-            drawPalette(split, color.splitcomplement());
+            drawPalette(split, splitComplement(color));
 
             var tetrad = document.getElementById("tetrad");
-            drawPalette(tetrad, color.tetrad());
+            drawPalette(tetrad, tetradPallete(color));
+        }
+
+        function triad(baseColor) {
+            var colors = triadScheme = baseColor.triad();
+            var newColors = [];
+            for(var i = 0; i < 12; i++) {
+                if(i == 0) { newColors.push(colors[0]); }
+                else if (i > 0 && i < 4) {
+                    var baseColor = colors[0].clone();
+                    baseColor.spin(i * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(baseColor);
+                }
+                else if (i == 4) { newColors.push(colors[1]); }
+                else if (i > 4 && i < 8) {
+                    var baseColor = colors[1].clone();
+                    baseColor.spin(i % 4 * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(baseColor);
+                }
+                else if (i == 8) { newColors.push(colors[2]); }
+                else if (i > 8 && i < 12) {
+                    var baseColor = colors[2].clone();
+                    baseColor.spin(i % 4 * 30).desaturate(amount = DESAT).darken(amount = DARKEN);;
+                    newColors.push(baseColor);
+                }
+            }
+            return newColors;
+        }
+
+        function complementaryPallete(baseColor) {
+            var newColors = [];
+            for (var i = 0; i < 12; i++) {
+                if (i == 0) { newColors.push(baseColor) }
+                else if (i > 0 && i < 6) {
+                    var color = baseColor.clone();
+                    color.spin(i * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+                else if (i == 6) { newColors.push(baseColor.complement()); }
+                else if (i > 5) {
+                    var color = baseColor.clone();
+                    color.spin(i * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+            }
+            return newColors;
+        }
+
+        function splitComplement(baseColor) {
+            var colors = baseColor.splitcomplement();
+            var newColors = [];
+            for (var i = 0; i < 12; i++) {
+                if (i == 0) { newColors.push(colors[0]); }
+                else if (i > 0 && i < 5) {
+                    var color = colors[0].clone().spin(i * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+                else if (i == 5) { newColors.push(colors[1]); }
+                else if (i == 6) {
+                    var color = colors[1].clone().spin(30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+                else if (i == 7) { newColors.push(colors[2]); }
+                else if (i > 7) {
+                    var color = colors[2].clone().spin(i % 4 * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+            }
+            return newColors;
+        }
+
+        function tetradPallete(baseColor) {
+            var colors = baseColor.tetrad();
+            var newColors = [];
+            for (var i = 0; i < 12; i++) {
+                if (i == 0) { newColors.push(colors[0]); }
+                else if (i == 1) {
+                    var color = colors[0].clone().spin(30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+                else if (i == 2) { newColors.push(colors[1]); }
+                else if (i > 2 && i < 6) {
+                    var color = colors[1].clone().spin(i % 3 * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+                else if (i == 6) { newColors.push(colors[2]); }
+                else if (i == 7) {
+                    var color = colors[2].clone().spin(30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+                else if (i == 8) { newColors.push(colors[3]); }
+                else if (i > 8) {
+                    var color = colors[3].clone().spin(i % 3 * 30).desaturate(amount = DESAT).darken(amount = DARKEN);
+                    newColors.push(color);
+                }
+            }
+            return newColors;
         }
         
         function drawPalette(canvas, colors) {
-        canvas.width = BOX_SIZE * colors.length;
-        canvas.height = BOX_SIZE;
-        var ctx = canvas.getContext("2d");
-            for (var i = 0; i < colors.length; i++) {
-                ctx.fillStyle = colors[i].toHexString();
-                ctx.fillRect(i * BOX_SIZE, 0, BOX_SIZE, BOX_SIZE);
-            }
+            canvas.width = 250;
+            canvas.height = 250;
+            drawCircle(canvas, colors);
         }
+
+        function drawCircle(canvas, colors){
+
+        var ctx = canvas.getContext('2d'),
+            segments = colors.length,
+            currentSegment = 0,
+            x = canvas.width / 2,
+            y = canvas.width / 2,
+            z = canvas.width / 4,
+            w = canvas.width / 6;
+            toRadians = function(deg){
+                return ( Math.PI / 180 ) * deg;
+            },
+            getTick = function(num){
+                var tick = toRadians(360) / segments;
+                return tick * num;
+            },
+            segment = function(start, end){
+                start = start || getTick(currentSegment);
+                end = end || getTick(currentSegment + 1);
+                ctx.beginPath();
+                ctx.arc(x, y, z, start, end);
+                ctx.stroke();
+                ctx.closePath();
+            };
+            ctx.lineWidth = w;
+            while (currentSegment < segments) {
+                ctx.strokeStyle = colors[currentSegment].toHexString();
+                segment(getTick(currentSegment), getTick(currentSegment + 1));
+                currentSegment += 1;
+            }
+    };
 
         colorWheel.on('color:change', colorUpdate);
 
