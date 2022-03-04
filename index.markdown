@@ -6,6 +6,7 @@ theme: jekyll-theme-slate
 * [Color Theory](/colors.html)
 * [Palette Generator](/palette.html)
 * [Mother Color](/mothercolor.html)
+* [Story Writer](/story.html)
 
 # Outside Resources
 * [Animal Head References](https://x6ud.github.io/#/)
