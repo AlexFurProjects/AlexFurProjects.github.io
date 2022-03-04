@@ -1,8 +1,11 @@
 #bin/sh
 
-NP="node_modules"
+echo "Compiling sources with browserify version..."
+browserify --version
+
 LIB="lib"
 
-cp $NP/rgbquant/src/rgbquant.js $LIB
-cp $NP/tinycolor2/dist/tinycolor-min.js $LIB
-cp $NP/@jaames/iro/dist/iro.min.js $LIB
+browserify -r @jaames/iro --standalone iro -o $LIB/iro.min.js
+browserify -r tinycolor2 --standalone tinycolor -o $LIB/tinycolor-min.js
+browserify -r rgbquant --standalone RgbQuant -o $LIB/rgbquant.js
+browserify -r nedb --standalone nedb -o $LIB/nedb.js

@@ -7,8 +7,10 @@
     "node": ">=12"
   },
   "dependencies": {
-    "@jaames/iro": "^5.5.1",
+    "@jaames/iro": "^5.5.2",
     "colors.js": "^1.2.4",
+    "nedb": "^1.8.0",
+    "npm-check-updates": "^12.5.2",
     "rgbquant": "^1.1.2",
     "tinycolor2": "^1.4.2"
   },
