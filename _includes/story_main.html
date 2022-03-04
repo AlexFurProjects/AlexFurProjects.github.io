@@ -1,71 +1,25 @@
 <link rel="stylesheet" href="/assets/styles/story.css">
 <section id="story_main">
+    <script src="/lib/nedb.js"></script>
+    <script src="/assets/scripts/storyApp.js"></script>
     <script>
-        function uiManager() {
-
-            var modules = {
-                projectNewLoad : {},
-                projectNew : {},
-                projectLoad: {},
-                projectManage: {}
-            }
-            this.modules = modules;
-
-            this.registerModule = function(object, module, showMethod = null, hideMethod = null) {
-                module.name = object.id;
-                module.object = object;
-                module.showMethod = showMethod;
-                module.hideMethod = hideMethod;
-            }
-
-            this.showModule = function(module) {
-                module.object.classList.remove("hide")
-                module.showMethod?.();
-                module.activeModule = true;
-                hideOthers(module);
-            }
-
-            function hideOthers(module) {
-                var entries = Object.entries(modules);
-                entries.forEach(element => {
-                    var key = element[0];
-                    var value = element[1];
-                    if (module.name != value.name) {
-                        value.object.classList.add("hide");
-                        value.activeModule = false;
-                    }
-                    if (value.activeModule) {
-                        value.hideMethod?.();
-                    }
-                });
-            }
-
-            function insertExitButton(module) {
-                var exitButton = document.createElement("button");
-                exitButton.innerHTML = "Exit";
-                exitButton.onclick = function() {
-                    this.showModule(this.modules.projectNewLoad);
-                }
-                module.object.innerHTML += exitButton.outerHTML;
-            }
-        }
-
-        window.manager = new uiManager();
+        window.storyApp = new StoryApp();
     </script>
 
 <!-- Project New and Load Module -->
     <section id="projectNewLoad">
-        <h2><button onClick="newProject()">New</button></h2>
-        <h2><button onClick="openLoadProject()">Load</button></h2>
+        <h1>Open Existing Story or Create a New One</h1>
+        <button onClick="newProject()">New</button>
+        <button onClick="openLoadProject()">Load</button>
         <script>
-            manager.registerModule(document.getElementById("projectNewLoad"), manager.modules.projectNewLoad);
+            storyApp.registerModule(document.getElementById("projectNewLoad"), storyApp.modules.projectNewLoad);
 
             function newProject() {
-                manager.showModule(manager.modules.projectNew);
+                storyApp.pushModule(storyApp.modules.projectNew);
             }
 
             function openLoadProject() {
-                manager.showModule(manager.modules.projectLoad);
+                storyApp.pushModule(storyApp.modules.projectLoad);
             }
             
         </script>
@@ -77,10 +31,10 @@
         <h2><input type="text"></h2>
         <h2><button onClick="createNewProject()">Create</button></h2>
         <script>
-            manager.registerModule(document.getElementById("projectNew"), manager.modules.projectNew);
+            storyApp.registerModule(document.getElementById("projectNew"), storyApp.modules.projectNew);
 
             function createNewProject() {
-
+                storyApp.pushModule(storyApp.modules.projectManage);
             }
         </script>
     </section>
@@ -90,30 +44,69 @@
         <h1>Load Project</h1>
         <h2><button onClick="loadProject()">Open Project</button></h2>
         <script>
-            manager.registerModule(document.getElementById("projectLoad"), 
-                                   manager.modules.projectLoad);
+            storyApp.registerModule(document.getElementById("projectLoad"), 
+                                   storyApp.modules.projectLoad);
 
             function loadProject() {
-                manager.showModule(manager.modules.projectManage);
+                storyApp.pushModule(storyApp.modules.projectManage);
             }
         </script>
     </section>
 
 <!-- Project Management Module -->
-    <section id="projectManager" class="hide">
+    <section id="projectstoryApp" class="hide">
         <h1>Manage Project</h1>
         <h2><button onClick="openSynopsis()">Synopsis</button></h2>
         <h2><button onClick="openCharacters()">Characters</button></h2>
         <h2><button onClick="openChapters()">Chapters</button></h2>
         
         <script>
-            manager.registerModule(document.getElementById("projectManager"),
-                                   manager.modules.projectManage);
+            storyApp.registerModule(document.getElementById("projectstoryApp"),
+                                   storyApp.modules.projectManage);
 
-            function openCharacters() {}
+            function openCharacters() {
+                storyApp.pushModule(storyApp.modules.characterList, ["Alex", "Zane", "Idle"]);
+            }
             function openChapters() {}
             function openSynopsis() {}
         </script>
     </section>
+
+<!-- Character List -->
+    <section id="characterListModule" class="hide">
+        <h1>Characters</h1>
+        <ul id="characterList"></ul>
+
+        <script>
+            storyApp.registerModule(document.getElementById("characterListModule"),
+                                   storyApp.modules.characterList,
+                                   showMethod=loadCharacters,
+                                   hideMethod=clearCharacters);
+
+            function loadCharacters(characters) {
+                var list = document.getElementById("characterList");
+                characters.forEach(character => {
+                    var header = document.createElement("h4");
+                    var button = document.createElement("button");
+                    header.appendChild(button);
+                    button.innerHTML = character;
+                    list.appendChild(header);
+                });
+            }
+
+            function clearCharacters() {
+                var list = document.getElementById("characterList");
+                list.innerHTML = ""; 
+            }
+        </script>
+    </section>
+
+<!-- Breadcrumb stuff -->
+    <button id="backButton" onClick="goBack()" class="hide">Back</button>
+    <script>
+        function goBack() {
+            storyApp.popModule();
+        }
+    </script>
 </section>
 
