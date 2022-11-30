@@ -19,4 +19,5 @@ theme: jekyll-theme-slate
 # Alex's Links
 * [AlexFurArt Twitter](https://twitter.com/AFurbottomArt)
 * [AlexFur FA](https://www.furaffinity.net/user/alexfurbottom/)
+* [AlexFur Itaku](https://itaku.ee/profile/alexfur)
 
